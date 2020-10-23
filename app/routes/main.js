@@ -44,6 +44,9 @@ module.exports = function (app, passport) {
   }
 
   function errorHandler(err) {
+    console.error("There was an error performing the operation");
+    console.log(err);
+    console.log(err.code);
     console.log(err.message);
   }
 };
