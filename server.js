@@ -4,6 +4,7 @@ var port = process.env.PORT || 8080;
 var mongoose = require("mongoose");
 var passport = require("passport");
 var flash = require("connect-flash");
+var db = require("./config/db");
 
 var morgan = require("morgan");
 var cookieParser = require("cookie-parser");
@@ -11,7 +12,11 @@ var bodyParser = require("body-parser");
 var session = require("express-session");
 
 // week2 - mongodb atlas
-
+mongoose.connect(db.url, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 // week2 - authentication
 
 app.use(morgan("dev"));
@@ -27,10 +32,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-// routes --------------
+// routes ======================================
 require("./app/routes/main.js")(app, passport);
 require("./app/routes/auth.js")(app, passport);
 
-// launch server ------------
+// launch server ===========================================
 app.listen(port);
 console.log(`YouLearn is running at http://localhost:${port}`);
