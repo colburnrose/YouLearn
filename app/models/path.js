@@ -12,6 +12,16 @@ var pathSchema = mongoose.Schema({
   numReview: { type: Number, default: 0 },
 });
 
+pathSchema.pre("find", function (next) {
+  this.populate("author");
+  next();
+});
+
+pathSchema.pre("findOne", function (next) {
+  this.populate("author");
+  next();
+});
+
 pathSchema.plugin(findOrCreate);
 
 module.exports = mongoose.model("Path", pathSchema);

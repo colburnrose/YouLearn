@@ -32,8 +32,22 @@ module.exports = function (app, passport) {
   // path
   app.get("/paths", (req, res) => {
     Path.find()
-      .populate("author")
       .then((paths) => res.send(paths))
+      .catch(errorHandler);
+  });
+
+  app.get("/path/:id", (req, res) => {
+    let path;
+    //Path.find({_id: req.params.id }} => [{},{}] [{}], []
+    Path.findOne({ _id: req.params.id }) // {}, null/undefined
+      .then((getPath) => {
+        path = getPath;
+        return Step.find({ path: path._id });
+      })
+      .then((steps) => {
+        path.steps = steps;
+        res.send(path);
+      })
       .catch(errorHandler);
   });
 
